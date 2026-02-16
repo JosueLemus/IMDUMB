@@ -15,6 +15,10 @@ dependencies:
   shared_preferences: ^2.5.3
   dio: ^5.9.1
   flutter_dotenv: ^6.0.0
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  carousel_slider_plus: ^7.1.1
+  get_it: ^9.2.0
 
 dev_dependencies:
   flutter_test:
