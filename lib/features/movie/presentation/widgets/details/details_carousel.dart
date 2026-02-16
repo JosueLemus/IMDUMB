@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:imdumb/core/theme/app_colors.dart';
 import 'package:imdumb/core/theme/app_typography.dart';
 import 'package:imdumb/features/movie/domain/entities/movie.dart';
 import 'package:imdumb/features/movie/presentation/bloc/movie_details_bloc.dart';
@@ -60,8 +59,6 @@ class DetailsCarousel extends StatelessWidget {
         ),
         const SizedBox(width: 12),
       ],
-      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
-      elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         stretchModes: const [StretchMode.zoomBackground],
         background: Stack(
@@ -104,6 +101,24 @@ class DetailsCarousel extends StatelessWidget {
                 ),
               ),
             ),
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Container(
+                height: 120,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withAlpha(120),
+                      Colors.black.withAlpha(0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             if (state is MovieDetailsLoaded &&
                 (state as MovieDetailsLoaded).movie.backdrops.length > 1)
               Positioned(
@@ -141,7 +156,6 @@ class DetailsCarousel extends StatelessWidget {
             ),
           ),
         ),
-        centerTitle: true,
       ),
     );
   }

@@ -61,9 +61,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       create: (context) =>
           sl<MovieDetailsBloc>()..add(FetchMovieDetails(widget.movie.id)),
       child: Scaffold(
-        backgroundColor: isDark
-            ? AppColors.darkBackground
-            : const Color(0xFFF8F9FB),
+        backgroundColor: isDark ? AppColors.darkBackground : Colors.white,
         body: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
           builder: (context, state) {
             return CustomScrollView(

@@ -18,6 +18,12 @@ abstract class AppTheme {
         error: Colors.redAccent,
         onError: Colors.white,
       ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
       textTheme:
           const TextTheme(
             displayLarge: AppTypography.displayLarge,
@@ -45,6 +51,12 @@ abstract class AppTheme {
         onSurfaceVariant: AppColors.darkSecondaryText,
         error: Colors.redAccent,
         onError: Colors.white,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
+        elevation: 0,
+        centerTitle: true,
       ),
       textTheme:
           const TextTheme(
