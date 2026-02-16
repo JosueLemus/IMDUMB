@@ -10,6 +10,7 @@ class MovieDetails extends Equatable {
   final String releaseDate;
   final int runtime;
   final List<String> genres;
+  final List<String> backdrops;
 
   const MovieDetails({
     required this.id,
@@ -21,6 +22,7 @@ class MovieDetails extends Equatable {
     required this.releaseDate,
     required this.runtime,
     required this.genres,
+    required this.backdrops,
   });
 
   String get fullPosterPath =>
@@ -29,6 +31,9 @@ class MovieDetails extends Equatable {
   String get fullBackdropPath => backdropPath.isNotEmpty
       ? 'https://image.tmdb.org/t/p/w1280$backdropPath'
       : '';
+
+  List<String> get fullBackdropPaths =>
+      backdrops.map((path) => 'https://image.tmdb.org/t/p/w1280$path').toList();
 
   String get formattedRuntime {
     final hours = runtime ~/ 60;
@@ -47,5 +52,6 @@ class MovieDetails extends Equatable {
     releaseDate,
     runtime,
     genres,
+    backdrops,
   ];
 }
