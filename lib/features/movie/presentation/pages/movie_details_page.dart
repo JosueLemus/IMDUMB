@@ -7,6 +7,7 @@ import '../../domain/entities/movie.dart';
 import '../bloc/movie_details_bloc.dart';
 import '../widgets/details/details_actions.dart';
 import '../widgets/details/details_carousel.dart';
+import '../widgets/details/details_cast.dart';
 import '../widgets/details/details_info.dart';
 import '../widgets/details/details_stats.dart';
 import '../widgets/details/details_storyline.dart';
@@ -87,7 +88,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                     child: _buildContentCard(context, state, isDark),
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
             );
           },
@@ -114,18 +114,31 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           ),
         ],
       ),
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 24),
-          DetailsInfo(movie: widget.movie, state: state, isDark: isDark),
-          const SizedBox(height: 32),
-          DetailsActions(isDark: isDark),
-          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
+            child: DetailsInfo(
+              movie: widget.movie,
+              state: state,
+              isDark: isDark,
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: DetailsActions(isDark: isDark),
+          ),
+
           DetailsStats(movie: widget.movie, state: state, isDark: isDark),
-          const SizedBox(height: 32),
-          DetailsStoryline(movie: widget.movie, isDark: isDark),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            child: DetailsStoryline(movie: widget.movie, isDark: isDark),
+          ),
+
+          if (state is MovieDetailsLoaded) DetailsCast(cast: (state).cast),
         ],
       ),
     );

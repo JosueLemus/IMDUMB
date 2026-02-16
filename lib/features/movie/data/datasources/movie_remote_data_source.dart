@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 
+import '../models/cast_model.dart';
+import '../models/crew_model.dart';
 import '../models/movie_details_model.dart';
 import '../models/movie_model.dart';
 
 abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies({int page = 1});
   Future<MovieDetailsModel> getMovieDetails(int id);
+  Future<(List<CastModel>, List<CrewModel>)> getMovieCredits(int id);
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -39,6 +42,23 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return MovieDetailsModel.fromJson(response.data);
     } else {
       throw Exception('Failed to load movie details');
+    }
+  }
+
+  @override
+  Future<(List<CastModel>, List<CrewModel>)> getMovieCredits(int id) async {
+    final response = await dio.get('/movie/$id/credits');
+
+    if (response.statusCode == 200) {
+      final List castJson = response.data['cast'] ?? [];
+      final List crewJson = response.data['crew'] ?? [];
+
+      final cast = castJson.map((json) => CastModel.fromJson(json)).toList();
+      final crew = crewJson.map((json) => CrewModel.fromJson(json)).toList();
+
+      return (cast, crew);
+    } else {
+      throw Exception('Failed to load movie credits');
     }
   }
 }

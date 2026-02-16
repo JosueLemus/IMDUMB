@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../domain/entities/cast.dart';
+import '../../domain/entities/crew.dart';
 import '../../domain/entities/movie_details.dart';
+import '../../domain/usecases/get_movie_credits.dart';
 import '../../domain/usecases/get_movie_details.dart';
 
 // Events
@@ -30,9 +34,17 @@ class MovieDetailsLoading extends MovieDetailsState {}
 
 class MovieDetailsLoaded extends MovieDetailsState {
   final MovieDetails movie;
-  const MovieDetailsLoaded(this.movie);
+  final List<Cast> cast;
+  final List<Crew> crew;
+
+  const MovieDetailsLoaded({
+    required this.movie,
+    required this.cast,
+    required this.crew,
+  });
+
   @override
-  List<Object?> get props => [movie];
+  List<Object?> get props => [movie, cast, crew];
 }
 
 class MovieDetailsError extends MovieDetailsState {
@@ -45,14 +57,24 @@ class MovieDetailsError extends MovieDetailsState {
 // Bloc
 class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
   final GetMovieDetails getMovieDetails;
+  final GetMovieCredits getMovieCredits;
 
-  MovieDetailsBloc({required this.getMovieDetails})
-    : super(MovieDetailsInitial()) {
+  MovieDetailsBloc({
+    required this.getMovieDetails,
+    required this.getMovieCredits,
+  }) : super(MovieDetailsInitial()) {
     on<FetchMovieDetails>((event, emit) async {
       emit(MovieDetailsLoading());
       try {
-        final movie = await getMovieDetails(event.id);
-        emit(MovieDetailsLoaded(movie));
+        final results = await Future.wait([
+          getMovieDetails(event.id),
+          getMovieCredits.execute(event.id),
+        ]);
+
+        final movie = results[0] as MovieDetails;
+        final (cast, crew) = results[1] as (List<Cast>, List<Crew>);
+
+        emit(MovieDetailsLoaded(movie: movie, cast: cast, crew: crew));
       } catch (e) {
         emit(MovieDetailsError(e.toString()));
       }

@@ -1,3 +1,5 @@
+import '../../domain/entities/cast.dart';
+import '../../domain/entities/crew.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/entities/movie_details.dart';
 import '../../domain/repositories/movie_repository.dart';
@@ -16,5 +18,10 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<MovieDetails> getMovieDetails(int id) async {
     return await remoteDataSource.getMovieDetails(id);
+  }
+
+  @override
+  Future<(List<Cast>, List<Crew>)> getMovieCredits(int id) async {
+    return await remoteDataSource.getMovieCredits(id);
   }
 }
