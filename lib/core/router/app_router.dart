@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdumb/features/splash/presentation/pages/splash_page.dart';
 
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/nav_wrapper.dart';
-import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/movie/domain/entities/movie.dart';
+import '../../features/movie/presentation/pages/movie_details_page.dart';
 
 abstract class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -16,6 +18,14 @@ abstract class AppRouter {
         path: '/',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: '/movie-details',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) {
+          final movie = state.extra as Movie;
+          return MovieDetailsPage(movie: movie);
+        },
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

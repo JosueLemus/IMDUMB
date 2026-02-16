@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 
+import '../models/movie_details_model.dart';
 import '../models/movie_model.dart';
 
 abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies({int page = 1});
+  Future<MovieDetailsModel> getMovieDetails(int id);
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -23,6 +25,17 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return results.map((json) => MovieModel.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load now playing movies');
+    }
+  }
+
+  @override
+  Future<MovieDetailsModel> getMovieDetails(int id) async {
+    final response = await dio.get('/movie/$id');
+
+    if (response.statusCode == 200) {
+      return MovieDetailsModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load movie details');
     }
   }
 }

@@ -8,14 +8,19 @@ import '../../features/movie/domain/usecases/get_now_playing_movies.dart';
 import '../../features/movie/presentation/bloc/now_playing_bloc.dart';
 import '../network/dio_client.dart';
 
+import '../../features/movie/domain/usecases/get_movie_details.dart';
+import '../../features/movie/presentation/bloc/movie_details_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
   sl.registerFactory(() => NowPlayingBloc(getNowPlayingMovies: sl()));
+  sl.registerFactory(() => MovieDetailsBloc(getMovieDetails: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetNowPlayingMovies(sl()));
+  sl.registerLazySingleton(() => GetMovieDetails(sl()));
 
   // Repository
   sl.registerLazySingleton<MovieRepository>(
