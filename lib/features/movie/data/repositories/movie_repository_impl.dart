@@ -83,12 +83,27 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<List<Movie>> getMoviesByGenre(int genreId) async {
-    return await remoteDataSource.getMoviesByGenre(genreId);
+  Future<List<Movie>> getMoviesByGenre(int genreId, {int page = 1}) async {
+    return await remoteDataSource.getMoviesByGenre(genreId, page: page);
   }
 
   @override
   Future<void> clearCache() async {
     await localDataSource.clearCache();
+  }
+
+  @override
+  Future<void> toggleFavorite(Movie movie) async {
+    final movieModel = GenreModel(
+      id: movie.id,
+      name: movie.title,
+      bannerUrl: movie.posterPath,
+    );
+    await localDataSource.toggleFavorite(movieModel);
+  }
+
+  @override
+  Future<bool> isFavorite(int id) async {
+    return await localDataSource.isFavorite(id);
   }
 }

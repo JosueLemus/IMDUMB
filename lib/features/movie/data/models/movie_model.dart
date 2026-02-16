@@ -8,6 +8,7 @@ class MovieModel extends Movie {
     required super.posterPath,
     required super.backdropPath,
     required super.voteAverage,
+    required super.voteCount,
     required super.releaseDate,
   });
 
@@ -19,6 +20,7 @@ class MovieModel extends Movie {
       posterPath: json['poster_path'] ?? '',
       backdropPath: json['backdrop_path'] ?? '',
       voteAverage: (json['vote_average'] as num).toDouble(),
+      voteCount: json['vote_count'] ?? 0,
       releaseDate: json['release_date'] ?? '',
     );
   }
@@ -31,6 +33,7 @@ class MovieModel extends Movie {
       'poster_path': posterPath,
       'backdrop_path': backdropPath,
       'vote_average': voteAverage,
+      'vote_count': voteCount,
       'release_date': releaseDate,
     };
   }

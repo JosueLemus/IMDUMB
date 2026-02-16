@@ -6,10 +6,13 @@ abstract class MovieLocalDataSource {
   Future<List<GenreModel>> getCachedGenres();
   Future<void> cacheGenres(List<GenreModel> genres);
   Future<void> clearCache();
+  Future<void> toggleFavorite(GenreModel movie);
+  Future<bool> isFavorite(int id);
 }
 
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   static const String _genresBoxName = 'genresBox';
+  static const String _favoritesBoxName = 'favoritesBox';
 
   @override
   Future<List<GenreModel>> getCachedGenres() async {
@@ -27,5 +30,22 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   @override
   Future<void> clearCache() async {
     await Hive.deleteBoxFromDisk(_genresBoxName);
+    await Hive.deleteBoxFromDisk(_favoritesBoxName);
+  }
+
+  @override
+  Future<void> toggleFavorite(GenreModel movie) async {
+    final box = await Hive.openBox<GenreModel>(_favoritesBoxName);
+    if (box.containsKey(movie.id)) {
+      await box.delete(movie.id);
+    } else {
+      await box.put(movie.id, movie);
+    }
+  }
+
+  @override
+  Future<bool> isFavorite(int id) async {
+    final box = await Hive.openBox<GenreModel>(_favoritesBoxName);
+    return box.containsKey(id);
   }
 }

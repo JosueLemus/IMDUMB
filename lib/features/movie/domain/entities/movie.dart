@@ -7,6 +7,7 @@ class Movie extends Equatable {
   final String posterPath;
   final String backdropPath;
   final double voteAverage;
+  final int voteCount;
   final String releaseDate;
 
   const Movie({
@@ -16,8 +17,11 @@ class Movie extends Equatable {
     required this.posterPath,
     required this.backdropPath,
     required this.voteAverage,
+    required this.voteCount,
     required this.releaseDate,
   });
+
+  String get year => releaseDate.isNotEmpty ? releaseDate.split('-')[0] : 'N/A';
 
   String get fullPosterPath => posterPath.isNotEmpty
       ? 'https://image.tmdb.org/t/p/w500${posterPath.startsWith('/') ? '' : '/'}$posterPath'

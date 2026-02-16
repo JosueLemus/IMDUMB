@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -57,7 +58,13 @@ class HomePage extends StatelessWidget {
                   return CategoryBannerWidget(
                     genre: state.genres[index],
                     onTap: () {
-                      // Navigate to genre details if needed
+                      context.push(
+                        '/genre-movies',
+                        extra: {
+                          'id': state.genres[index].id,
+                          'name': state.genres[index].name,
+                        },
+                      );
                     },
                   );
                 },

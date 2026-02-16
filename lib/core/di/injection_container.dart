@@ -10,6 +10,9 @@ import 'package:imdumb/features/movie/domain/usecases/get_movie_credits.dart';
 import 'package:imdumb/features/movie/domain/usecases/get_movie_details.dart';
 import 'package:imdumb/features/movie/domain/usecases/get_movies_by_genre.dart';
 import 'package:imdumb/features/movie/domain/usecases/get_now_playing_movies.dart';
+import 'package:imdumb/features/movie/domain/usecases/is_favorite.dart';
+import 'package:imdumb/features/movie/domain/usecases/toggle_favorite.dart';
+import 'package:imdumb/features/movie/presentation/bloc/genre_movies_bloc.dart';
 import 'package:imdumb/features/movie/presentation/bloc/movie_details_bloc.dart';
 
 final sl = GetIt.instance;
@@ -23,6 +26,13 @@ Future<void> init() async {
   sl.registerFactory(
     () => MovieDetailsBloc(getMovieDetails: sl(), getMovieCredits: sl()),
   );
+  sl.registerFactory(
+    () => GenreMoviesBloc(
+      getMoviesByGenre: sl(),
+      toggleFavorite: sl(),
+      isFavorite: sl(),
+    ),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => GetNowPlayingMovies(sl()));
@@ -30,6 +40,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetMovieCredits(sl()));
   sl.registerLazySingleton(() => GetGenres(sl()));
   sl.registerLazySingleton(() => GetMoviesByGenre(sl()));
+  sl.registerLazySingleton(() => ToggleFavorite(sl()));
+  sl.registerLazySingleton(() => IsFavorite(sl()));
 
   // Repository
   sl.registerLazySingleton<MovieRepository>(

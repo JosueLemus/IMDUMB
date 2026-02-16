@@ -5,6 +5,7 @@ import 'package:imdumb/features/splash/presentation/pages/splash_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/nav_wrapper.dart';
 import '../../features/movie/domain/entities/movie.dart';
+import '../../features/movie/presentation/pages/genre_movies_page.dart';
 import '../../features/movie/presentation/pages/movie_details_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 
@@ -26,6 +27,17 @@ abstract class AppRouter {
         builder: (context, state) {
           final movie = state.extra as Movie;
           return MovieDetailsPage(movie: movie);
+        },
+      ),
+      GoRoute(
+        path: '/genre-movies',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return GenreMoviesPage(
+            genreId: extra['id'] as int,
+            genreName: extra['name'] as String,
+          );
         },
       ),
       StatefulShellRoute.indexedStack(

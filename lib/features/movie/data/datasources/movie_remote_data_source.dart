@@ -11,7 +11,7 @@ abstract class MovieRemoteDataSource {
   Future<MovieDetailsModel> getMovieDetails(int id);
   Future<(List<CastModel>, List<CrewModel>)> getMovieCredits(int id);
   Future<List<GenreModel>> getGenres();
-  Future<List<MovieModel>> getMoviesByGenre(int genreId);
+  Future<List<MovieModel>> getMoviesByGenre(int genreId, {int page = 1});
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -78,10 +78,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   }
 
   @override
-  Future<List<MovieModel>> getMoviesByGenre(int genreId) async {
+  Future<List<MovieModel>> getMoviesByGenre(int genreId, {int page = 1}) async {
     final response = await dio.get(
       '/discover/movie',
-      queryParameters: {'with_genres': genreId, 'page': 1},
+      queryParameters: {'with_genres': genreId, 'page': page},
     );
 
     if (response.statusCode == 200) {

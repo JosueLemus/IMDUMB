@@ -6,7 +6,7 @@ class GetMoviesByGenre {
 
   GetMoviesByGenre(this.repository);
 
-  Future<List<Movie>> execute(int genreId) async {
-    return await repository.getMoviesByGenre(genreId);
+  Future<List<Movie>> execute(int genreId, {int page = 1}) async {
+    return await repository.getMoviesByGenre(genreId, page: page);
   }
 }
