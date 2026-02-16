@@ -150,7 +150,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.5)],
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.5),
+                    ],
                   ),
                 ),
               ),
@@ -172,7 +175,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       decoration: BoxDecoration(
                         color: _currentPage == index
                             ? Colors.white
-                            : Colors.white.withOpacity(0.4),
+                            : Colors.white.withValues(alpha: 0.4),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -208,7 +211,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, -10),
           ),
@@ -219,20 +222,26 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 32),
-          _buildMainInfoRow(context, isDark),
+          _buildMainInfoRow(context, isDark, state),
           const SizedBox(height: 32),
           _buildActionsRow(context, isDark),
-          const SizedBox(height: 48),
+          const SizedBox(height: 24),
           _buildStatsRow(context, isDark, state),
-          const SizedBox(height: 40),
+          const SizedBox(height: 32),
           _buildStoryline(isDark),
         ],
       ),
     );
   }
 
-  Widget _buildMainInfoRow(BuildContext context, bool isDark) {
+  Widget _buildMainInfoRow(
+    BuildContext context,
+    bool isDark,
+    MovieDetailsState state,
+  ) {
     final year = widget.movie.releaseDate.split('-').first;
+    final movieDetails = state is MovieDetailsLoaded ? state.movie : null;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -245,7 +254,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
                 ),
@@ -276,21 +285,22 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               ),
               const SizedBox(height: 12),
               Text(
-                '$year  •  2h 49m  •  PG-13',
+                '$year${movieDetails != null ? '  •  ${movieDetails.formattedRuntime}' : ''}',
                 style: AppTypography.movieMetaInfo.copyWith(
                   fontSize: 14,
                   color: Colors.grey.shade600,
                 ),
               ),
-              const SizedBox(height: 16),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  _genreChip('SCI-FI', isDark),
-                  _genreChip('DRAMA', isDark),
-                ],
-              ),
+              if (movieDetails != null && movieDetails.genres.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: movieDetails.genres
+                      .map((genre) => _genreChip(genre.toUpperCase(), isDark))
+                      .toList(),
+                ),
+              ],
             ],
           ),
         ),
@@ -332,7 +342,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               elevation: 8,
-              shadowColor: AppColors.primary.withOpacity(0.4),
+              shadowColor: AppColors.primary.withValues(alpha: 0.4),
               minimumSize: const Size(double.infinity, 54),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -366,6 +376,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     bool isDark,
     MovieDetailsState state,
   ) {
+    final movieDetails = state is MovieDetailsLoaded ? state.movie : null;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -376,22 +388,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           'IMDb Score',
           isDark,
         ),
-        _statDivider(isDark),
-        _statItem(
-          Icons.thumb_up_rounded,
-          const Color(0xFF4CAF50),
-          '94%',
-          'User Like',
-          isDark,
-        ),
-        _statDivider(isDark),
-        _statItem(
-          Icons.emoji_events_rounded,
-          const Color(0xFF9C27B0),
-          '#20',
-          'Ranking',
-          isDark,
-        ),
+        if (movieDetails != null) ...[
+          _statDivider(isDark),
+          _statItem(
+            Icons.thumb_up_rounded,
+            const Color(0xFF4CAF50),
+            '${(movieDetails.voteAverage * 10).toInt()}%',
+            'User Like',
+            isDark,
+          ),
+        ],
       ],
     );
   }
@@ -400,7 +406,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return Container(
       width: 1,
       height: 32,
-      color: isDark ? Colors.white10 : Colors.black.withAlpha(10),
+      color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 10 / 255),
     );
   }
 
@@ -471,7 +477,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       height: 40,
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: scrolled ? Colors.transparent : Colors.black.withOpacity(0.3),
+        color: scrolled
+            ? Colors.transparent
+            : Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(

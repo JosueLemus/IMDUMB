@@ -72,8 +72,9 @@ class NowPlayingBloc extends Bloc<NowPlayingEvent, NowPlayingState> {
     on<FetchNowPlayingMovies>((event, emit) async {
       if (state is NowPlayingLoaded &&
           (state as NowPlayingLoaded).hasReachedMax &&
-          !event.initial)
+          !event.initial) {
         return;
+      }
 
       try {
         if (event.initial) {
