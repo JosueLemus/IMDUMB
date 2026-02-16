@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 class DetailsAppBarButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
-  final bool isDark;
   final bool scrolled;
 
   const DetailsAppBarButton({
     super.key,
     required this.icon,
     required this.onPressed,
-    required this.isDark,
     required this.scrolled,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: 40,
       height: 40,
@@ -23,16 +22,14 @@ class DetailsAppBarButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: scrolled
             ? Colors.transparent
-            : Colors.black.withValues(alpha: 0.3),
+            : colorScheme.surface.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(
           icon,
-          color: scrolled
-              ? (isDark ? Colors.white : Colors.black)
-              : Colors.white,
+          color: scrolled ? colorScheme.onSurface : colorScheme.onSurface,
           size: 18,
         ),
         onPressed: onPressed,

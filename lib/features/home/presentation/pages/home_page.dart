@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/injection_container.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
@@ -20,7 +19,10 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.movie_creation_rounded, color: AppColors.primary),
+            child: Icon(
+              Icons.movie_creation_rounded,
+              color: Theme.of(context).colorScheme.primary,
+            ),
           ),
           title: Text(
             'IMDUMB',

@@ -45,9 +45,7 @@ class MovieListItem extends StatelessWidget {
                         imageUrl: movie.fullPosterPath,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
-                          color: theme.brightness == Brightness.dark
-                              ? Colors.grey.shade900
-                              : Colors.grey.shade200,
+                          color: colorScheme.surfaceContainerHighest,
                           child: const Center(
                             child: CircularProgressIndicator(),
                           ),
@@ -87,7 +85,7 @@ class MovieListItem extends StatelessWidget {
                                       ? Icons.bookmark_rounded
                                       : Icons.bookmark_border_rounded,
                                   color: isBookmarked
-                                      ? AppColors.primary
+                                      ? colorScheme.primary
                                       : colorScheme.onSurfaceVariant,
                                   size: 22,
                                 ),
@@ -106,14 +104,14 @@ class MovieListItem extends StatelessWidget {
                             children: [
                               const Icon(
                                 Icons.star_rounded,
-                                color: AppColors.ratingStar,
+                                color: AppColors.warning,
                                 size: 18,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 movie.voteAverage.toStringAsFixed(1),
                                 style: AppTypography.labelLarge.copyWith(
-                                  color: AppColors.ratingStar,
+                                  color: AppColors.warning,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

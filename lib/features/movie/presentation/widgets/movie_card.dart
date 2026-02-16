@@ -20,15 +20,9 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    const shadowColor = Color(0x80000000);
-    const overlayGradientBase = Color(0x33000000);
-    const overlayGradientEnd = Color(0xCC000000);
-    const dotSeparatorColor = Color(0x8CFFFFFF);
-    const yearColor = Color(0xB3FFFFFF);
-    const saveButtonBackground = Color(0x33FFFFFF);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return GestureDetector(
       onTap: () => context.push('/movie-details', extra: movie),
@@ -37,10 +31,14 @@ class MovieCard extends StatelessWidget {
         height: height,
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+          color: colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(32),
-          boxShadow: const [
-            BoxShadow(color: shadowColor, blurRadius: 10, offset: Offset(0, 5)),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.shadow.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
           ],
         ),
         clipBehavior: Clip.antiAlias,
@@ -55,37 +53,26 @@ class MovieCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 memCacheWidth: 600,
                 placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: isDark
-                      ? const Color(0xFF1E1B2E)
-                      : const Color(0xFFF3F4F6),
-                  highlightColor: isDark
-                      ? const Color(0xFF2D2A3E)
-                      : const Color(0xFFFFFFFF),
+                  baseColor: colorScheme.surfaceContainerHighest,
+                  highlightColor: colorScheme.surface,
                   child: Container(color: Colors.white),
                 ),
                 errorWidget: (context, url, error) => Container(
-                  color: isDark
-                      ? AppColors.darkAltSurface
-                      : AppColors.lightAltBackground,
-                  child: Icon(
-                    Icons.error,
-                    color: isDark
-                        ? AppColors.darkSecondaryText
-                        : AppColors.lightSecondaryText,
-                  ),
+                  color: colorScheme.surfaceContainerHighest,
+                  child: Icon(Icons.error, color: colorScheme.onSurfaceVariant),
                 ),
               ),
             ),
             Positioned.fill(
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      overlayGradientBase,
-                      overlayGradientEnd,
+                      Colors.black.withValues(alpha: 0.2),
+                      Colors.black.withValues(alpha: 0.8),
                     ],
                   ),
                 ),
@@ -122,19 +109,18 @@ class MovieCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        '•',
-                        style: TextStyle(color: dotSeparatorColor),
-                      ),
+                      const Text('•', style: TextStyle(color: Colors.white70)),
                       const SizedBox(width: 12),
                       Text(
                         movie.releaseDate.split('-').first,
-                        style: textTheme.bodyMedium?.copyWith(color: yearColor),
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: Colors.white70,
+                        ),
                       ),
                       const Spacer(),
                       Container(
                         decoration: BoxDecoration(
-                          color: saveButtonBackground,
+                          color: Colors.white.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: IconButton(

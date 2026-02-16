@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart';
-
 abstract class AppTypography {
   static const String fontFamily = 'Inter';
 
@@ -9,7 +7,6 @@ abstract class AppTypography {
     fontFamily: 'Anton',
     fontSize: 44,
     fontWeight: FontWeight.w900,
-    color: AppColors.movieAccent,
     height: 0.9,
     letterSpacing: 1.2,
   );
@@ -53,7 +50,6 @@ abstract class AppTypography {
   static const TextStyle movieMetaInfo = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w700,
-    color: Colors.grey,
   );
 
   static const TextStyle movieStatsValue = TextStyle(
@@ -61,10 +57,7 @@ abstract class AppTypography {
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle movieStatsLabel = TextStyle(
-    fontSize: 12,
-    color: Colors.grey,
-  );
+  static const TextStyle movieStatsLabel = TextStyle(fontSize: 12);
 
   static const TextStyle sectionHeader = TextStyle(
     fontSize: 22,

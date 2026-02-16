@@ -5,22 +5,25 @@ import 'app_typography.dart';
 
 abstract class AppTheme {
   static ThemeData get light {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
+      brightness: Brightness.light,
+      surface: AppColors.lightBackground,
+      onSurface: AppColors.lightPrimaryText,
+      surfaceContainerHighest: AppColors.lightAltBackground,
+      onSurfaceVariant: AppColors.lightSecondaryText,
+      error: Colors.redAccent,
+      onError: Colors.white,
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      colorScheme: const ColorScheme.light(
-        primary: AppColors.primary,
-        onPrimary: Colors.white,
-        surface: AppColors.lightSurface,
-        onSurface: AppColors.lightPrimaryText,
-        surfaceContainerHighest: AppColors.lightAltBackground,
-        onSurfaceVariant: AppColors.lightSecondaryText,
-        error: Colors.redAccent,
-        onError: Colors.white,
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: colorScheme.surface,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
@@ -32,29 +35,32 @@ abstract class AppTheme {
             bodyMedium: AppTypography.bodyMedium,
             labelLarge: AppTypography.labelLarge,
           ).apply(
-            bodyColor: AppColors.lightPrimaryText,
-            displayColor: AppColors.lightPrimaryText,
+            bodyColor: colorScheme.onSurface,
+            displayColor: colorScheme.onSurface,
           ),
     );
   }
 
   static ThemeData get dark {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
+      brightness: Brightness.dark,
+      surface: AppColors.darkBackground,
+      onSurface: AppColors.darkPrimaryText,
+      surfaceContainerHighest: AppColors.darkSurface,
+      onSurfaceVariant: AppColors.darkSecondaryText,
+      error: Colors.redAccent,
+      onError: Colors.white,
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
-        primary: AppColors.primary,
-        onPrimary: Colors.white,
-        surface: AppColors.darkSurface,
-        onSurface: AppColors.darkPrimaryText,
-        surfaceContainerHighest: AppColors.darkAltSurface,
-        onSurfaceVariant: AppColors.darkSecondaryText,
-        error: Colors.redAccent,
-        onError: Colors.white,
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black,
-        surfaceTintColor: Colors.black,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: colorScheme.surface,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
@@ -66,8 +72,8 @@ abstract class AppTheme {
             bodyMedium: AppTypography.bodyMedium,
             labelLarge: AppTypography.labelLarge,
           ).apply(
-            bodyColor: AppColors.darkPrimaryText,
-            displayColor: AppColors.darkPrimaryText,
+            bodyColor: colorScheme.onSurface,
+            displayColor: colorScheme.onSurface,
           ),
     );
   }

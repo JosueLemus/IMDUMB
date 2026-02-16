@@ -16,6 +16,7 @@ class CategoryBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -27,7 +28,7 @@ class CategoryBannerWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
+                    color: colorScheme.shadow.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -44,27 +45,27 @@ class CategoryBannerWidget extends StatelessWidget {
                         height: double.infinity,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Container(
-                          color: Colors.grey[900],
+                          color: colorScheme.surfaceContainerHighest,
                           child: const Center(
                             child: CircularProgressIndicator(),
                           ),
                         ),
                         errorWidget: (context, url, error) => Container(
-                          color: Colors.grey[900],
-                          child: const Icon(
+                          color: colorScheme.surfaceContainerHighest,
+                          child: Icon(
                             Icons.movie_filter,
-                            color: Colors.white,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       )
                     else
                       Container(
-                        color: Colors.grey[900],
-                        child: const Center(
+                        color: colorScheme.surfaceContainerHighest,
+                        child: Center(
                           child: Icon(
                             Icons.movie_filter,
                             size: 40,
-                            color: Colors.white,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -73,15 +74,13 @@ class CategoryBannerWidget extends StatelessWidget {
               ),
             ),
           ),
-
+          const SizedBox(height: 8),
           Center(
             child: Text(
               genre.name,
               style: AppTypography.bodyLarge.copyWith(
                 fontWeight: FontWeight.w500,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
+                color: colorScheme.onSurface,
               ),
             ),
           ),

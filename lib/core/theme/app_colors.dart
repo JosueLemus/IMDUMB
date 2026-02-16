@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
+  // Brand Colors
   static const Color primary = Color(0xFF3713EC);
 
+  // Theme Source Colors
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightAltBackground = Color(0xFFF3F4F6);
@@ -15,14 +17,13 @@ abstract class AppColors {
   static const Color darkPrimaryText = Color(0xFFFFFFFF);
   static const Color darkSecondaryText = Color(0xFF9CA3AF);
 
-  static const Color movieAccent = Color(0xFFE62117);
-
-  static const Color ratingStar = Color(0xFFFFC107);
-  static const Color tomatoSuccess = Color(0xFF4CAF50);
-  static const Color overlayButtonBackground = Color(0x4D000000);
-  static const Color dividerLight = Color(0x1F000000);
-  static const Color dividerDark = Color(0x3DFFFFFF);
-
+  // Semantic Colors
   static const Color success = Color(0xFF16A34A);
-  static const Color warning = Color(0xFFFACC15);
+  static const Color warning = Color(0xFFFFC107);
+  static const Color info = Color(0xFF3B82F6);
+  static const Color error = Color(0xFFE62117);
+
+  // Utility Colors
+  static const Color bannerPlaceholder = Color(0xFF111111);
+  static const Color scrim = Color(0x99000000);
 }

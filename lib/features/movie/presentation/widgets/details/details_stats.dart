@@ -7,14 +7,8 @@ import 'package:imdumb/features/movie/presentation/bloc/movie_details_bloc.dart'
 class DetailsStats extends StatelessWidget {
   final Movie movie;
   final MovieDetailsState state;
-  final bool isDark;
 
-  const DetailsStats({
-    super.key,
-    required this.movie,
-    required this.state,
-    required this.isDark,
-  });
+  const DetailsStats({super.key, required this.movie, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -26,41 +20,44 @@ class DetailsStats extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _statItem(
+          context,
           Icons.star_rounded,
-          AppColors.ratingStar,
+          AppColors.warning,
           movie.voteAverage.toStringAsFixed(1),
           'IMDb Score',
-          isDark,
         ),
         if (movieDetails != null) ...[
-          _statDivider(isDark),
+          _statDivider(context),
           _statItem(
+            context,
             Icons.thumb_up_rounded,
-            const Color(0xFF4CAF50),
+            AppColors.success,
             '${(movieDetails.voteAverage * 10).toInt()}%',
             'User Like',
-            isDark,
           ),
         ],
       ],
     );
   }
 
-  Widget _statDivider(bool isDark) {
+  Widget _statDivider(BuildContext context) {
     return Container(
       width: 1,
       height: 32,
-      color: isDark ? Colors.white10 : Colors.black.withValues(alpha: 10 / 255),
+      color: Theme.of(
+        context,
+      ).colorScheme.outlineVariant.withValues(alpha: 0.5),
     );
   }
 
   Widget _statItem(
+    BuildContext context,
     IconData icon,
     Color iconColor,
     String value,
     String label,
-    bool isDark,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Row(
@@ -72,7 +69,7 @@ class DetailsStats extends StatelessWidget {
               value,
               style: AppTypography.movieStatsValue.copyWith(
                 fontSize: 18,
-                color: isDark ? Colors.white : Colors.black,
+                color: colorScheme.onSurface,
               ),
             ),
           ],
@@ -80,7 +77,10 @@ class DetailsStats extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           label,
-          style: AppTypography.movieStatsLabel.copyWith(fontSize: 11),
+          style: AppTypography.movieStatsLabel.copyWith(
+            fontSize: 11,
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );

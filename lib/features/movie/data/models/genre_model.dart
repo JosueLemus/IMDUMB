@@ -6,18 +6,11 @@ part 'genre_model.g.dart';
 
 @HiveType(typeId: 0)
 class GenreModel extends Genre {
-  @override
-  @HiveField(0)
-  final int id;
-  @override
-  @HiveField(1)
-  final String name;
-  @override
-  @HiveField(2)
-  final String? bannerUrl;
-
-  const GenreModel({required this.id, required this.name, this.bannerUrl})
-    : super(id: id, name: name, bannerUrl: bannerUrl);
+  const GenreModel({
+    @HiveField(0) required super.id,
+    @HiveField(1) required super.name,
+    @HiveField(2) super.bannerUrl,
+  });
 
   factory GenreModel.fromJson(Map<String, dynamic> json) {
     return GenreModel(id: json['id'], name: json['name'] ?? '');

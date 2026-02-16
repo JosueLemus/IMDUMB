@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injection_container.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/movie.dart';
 import '../bloc/movie_details_bloc.dart';
 import '../widgets/details/details_actions.dart';
@@ -53,7 +52,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
     final carouselHeight = size.height * 0.3;
 
@@ -61,7 +59,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       create: (context) =>
           sl<MovieDetailsBloc>()..add(FetchMovieDetails(widget.movie.id)),
       child: Scaffold(
-        backgroundColor: isDark ? AppColors.darkBackground : Colors.white,
         body: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
           builder: (context, state) {
             return CustomScrollView(
@@ -71,7 +68,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 DetailsCarousel(
                   movie: widget.movie,
                   state: state,
-                  isDark: isDark,
                   height: carouselHeight,
                   showCollapsedTitle: _showCollapsedTitle,
                   currentPage: _currentPage,
@@ -83,7 +79,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 SliverToBoxAdapter(
                   child: Transform.translate(
                     offset: const Offset(0, -32),
-                    child: _buildContentCard(context, state, isDark),
+                    child: _buildContentCard(context, state),
                   ),
                 ),
               ],
@@ -94,19 +90,16 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     );
   }
 
-  Widget _buildContentCard(
-    BuildContext context,
-    MovieDetailsState state,
-    bool isDark,
-  ) {
+  Widget _buildContentCard(BuildContext context, MovieDetailsState state) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : Colors.white,
+        color: colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: colorScheme.shadow.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, -10),
           ),
@@ -117,23 +110,19 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
-            child: DetailsInfo(
-              movie: widget.movie,
-              state: state,
-              isDark: isDark,
-            ),
+            child: DetailsInfo(movie: widget.movie, state: state),
           ),
 
           Padding(
             padding: const EdgeInsets.all(20),
-            child: DetailsActions(isDark: isDark),
+            child: const DetailsActions(),
           ),
 
-          DetailsStats(movie: widget.movie, state: state, isDark: isDark),
+          DetailsStats(movie: widget.movie, state: state),
 
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: DetailsStoryline(movie: widget.movie, isDark: isDark),
+            child: DetailsStoryline(movie: widget.movie),
           ),
 
           if (state is MovieDetailsLoaded) DetailsCast(cast: (state).cast),

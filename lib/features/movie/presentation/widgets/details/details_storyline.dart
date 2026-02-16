@@ -4,16 +4,12 @@ import 'package:imdumb/features/movie/domain/entities/movie.dart';
 
 class DetailsStoryline extends StatelessWidget {
   final Movie movie;
-  final bool isDark;
 
-  const DetailsStoryline({
-    super.key,
-    required this.movie,
-    required this.isDark,
-  });
+  const DetailsStoryline({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,14 +17,14 @@ class DetailsStoryline extends StatelessWidget {
           'Storyline',
           style: AppTypography.sectionHeader.copyWith(
             fontSize: 20,
-            color: isDark ? Colors.white : Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 16),
         Text(
           movie.overview,
           style: AppTypography.movieOverview.copyWith(
-            color: isDark ? Colors.white70 : Colors.black54,
+            color: colorScheme.onSurfaceVariant,
             height: 1.8,
             fontSize: 15,
           ),

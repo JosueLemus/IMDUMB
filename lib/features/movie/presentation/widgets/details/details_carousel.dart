@@ -9,7 +9,6 @@ import 'details_app_bar_button.dart';
 class DetailsCarousel extends StatelessWidget {
   final Movie movie;
   final MovieDetailsState state;
-  final bool isDark;
   final double height;
   final bool showCollapsedTitle;
   final int currentPage;
@@ -21,7 +20,6 @@ class DetailsCarousel extends StatelessWidget {
     super.key,
     required this.movie,
     required this.state,
-    required this.isDark,
     required this.height,
     required this.showCollapsedTitle,
     required this.currentPage,
@@ -32,6 +30,7 @@ class DetailsCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final backdropPath = movie.backdropPath;
     final fullBackdrop = backdropPath.isNotEmpty
         ? 'https://image.tmdb.org/t/p/w1280$backdropPath'
@@ -46,7 +45,6 @@ class DetailsCarousel extends StatelessWidget {
         child: DetailsAppBarButton(
           icon: Icons.arrow_back_ios_new_rounded,
           onPressed: onBack,
-          isDark: isDark,
           scrolled: showCollapsedTitle,
         ),
       ),
@@ -54,7 +52,6 @@ class DetailsCarousel extends StatelessWidget {
         DetailsAppBarButton(
           icon: Icons.share_rounded,
           onPressed: () {},
-          isDark: isDark,
           scrolled: showCollapsedTitle,
         ),
         const SizedBox(width: 12),
@@ -136,8 +133,8 @@ class DetailsCarousel extends StatelessWidget {
                       width: currentPage == index ? 24 : 12,
                       decoration: BoxDecoration(
                         color: currentPage == index
-                            ? Colors.white
-                            : Colors.white.withValues(alpha: 0.4),
+                            ? colorScheme.onSurface
+                            : colorScheme.onSurface.withValues(alpha: 0.4),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -152,7 +149,7 @@ class DetailsCarousel extends StatelessWidget {
           child: Text(
             movie.title,
             style: AppTypography.movieAppBarTitle.copyWith(
-              color: isDark ? Colors.white : Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),

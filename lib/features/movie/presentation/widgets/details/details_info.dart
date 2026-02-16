@@ -7,14 +7,8 @@ import 'package:imdumb/features/movie/presentation/bloc/movie_details_bloc.dart'
 class DetailsInfo extends StatelessWidget {
   final Movie movie;
   final MovieDetailsState state;
-  final bool isDark;
 
-  const DetailsInfo({
-    super.key,
-    required this.movie,
-    required this.state,
-    required this.isDark,
-  });
+  const DetailsInfo({super.key, required this.movie, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +53,7 @@ class DetailsInfo extends StatelessWidget {
                 style: AppTypography.displayLarge.copyWith(
                   fontSize: 28,
                   height: 1.1,
-                  color: isDark ? Colors.white : Colors.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -69,7 +63,7 @@ class DetailsInfo extends StatelessWidget {
                 '$year${movieDetails != null ? '  •  ${movieDetails.formattedRuntime}' : ''}',
                 style: AppTypography.movieMetaInfo.copyWith(
                   fontSize: 14,
-                  color: Colors.grey.shade600,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               if (movieDetails != null && movieDetails.genres.isNotEmpty) ...[
@@ -78,7 +72,7 @@ class DetailsInfo extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 8,
                   children: movieDetails.genres
-                      .map((genre) => _genreChip(genre.toUpperCase(), isDark))
+                      .map((genre) => _genreChip(context, genre.toUpperCase()))
                       .toList(),
                 ),
               ],
@@ -89,17 +83,18 @@ class DetailsInfo extends StatelessWidget {
     );
   }
 
-  Widget _genreChip(String label, bool isDark) {
+  Widget _genreChip(BuildContext context, String label) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2D2A45) : const Color(0xFFEFF1F5),
+        color: colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: isDark ? Colors.white70 : Colors.indigo.shade400,
+          color: colorScheme.onSecondaryContainer,
           fontSize: 11,
           fontWeight: FontWeight.bold,
           letterSpacing: 0.8,
