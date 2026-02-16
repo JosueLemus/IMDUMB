@@ -6,6 +6,7 @@ import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/nav_wrapper.dart';
 import '../../features/movie/domain/entities/movie.dart';
 import '../../features/movie/presentation/pages/movie_details_page.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
 
 abstract class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -62,8 +63,7 @@ abstract class AppRouter {
             routes: [
               GoRoute(
                 path: '/profile',
-                builder: (context, state) =>
-                    const Scaffold(body: Center(child: Text('Profile Page'))),
+                builder: (context, state) => const ProfilePage(),
               ),
             ],
           ),
