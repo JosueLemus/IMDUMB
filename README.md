@@ -1,166 +1,186 @@
 # IMDUMB
 
-A Flutter movie application demonstrating **Clean Architecture**, **SOLID principles**, and **production-grade practices**. This project fulfills the technical challenge requirements for a Senior Flutter Developer profile.
+Una aplicación de películas en Flutter que demuestra **Clean Architecture**, **principios SOLID** y **prácticas de nivel de producción**.
 
 ---
 
-## 📋 Project Overview
+## 📋 Descripción del Proyecto
 
-**IMDUMB** is a movie discovery app that showcases diverse technical capabilities:
-- **Architecture**: Strict Clean Architecture (Presentation, Domain, Data).
-- **State Management**: BLoC implementation with `bloc_concurrency` for event transformation.
-- **Networking**: Dio with custom Interceptors and error handling.
-- **Environments**: Configured flavors for **QA** and **Production**.
-- **Firebase Integration**: Remote Config for dynamic theming, Analytics for user behavior, and Firestore for managing user recommendations.
+**IMDUMB** es una app de descubrimiento de películas que exhibe diversas capacidades técnicas:
+- **Arquitectura**: Clean Architecture estricta (Presentation, Domain, Data).
+- **Manejo de Estado**: Implementación de BLoC con `bloc_concurrency` para transformación de eventos.
+- **Networking**: Dio con Interceptors personalizados y manejo de errores.
+- **Ambientes**: Flavors configurados para **QA** y **Producción**.
+- **Integración con Firebase**: Remote Config para temas dinámicos, Analytics para comportamiento de usuario y Firestore para gestionar recomendaciones.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Arquitectura
 
-The project follows a rigorous **Clean Architecture** to ensure separation of concerns, testability, and scalability.
+El proyecto sigue una rigurosa **Clean Architecture** para asegurar separación de responsabilidades, testabilidad y escalabilidad.
 
 ```
 lib/
-├── core/                    # Cross-cutting concerns
-│   ├── bloc/                # Global BlocObserver
-│   ├── config/              # Environment configuration (Env)
-│   ├── di/                  # Dependency Injection (GetIt)
-│   ├── network/             # Dio client & Interceptors
-│   ├── router/              # Navigation (GoRouter)
-│   ├── services/            # Third-party services (RemoteConfig, Theme)
-│   └── theme/               # App Design System
+├── core/                    # Funcionalidades transversales
+│   ├── bloc/                # BlocObserver Global
+│   ├── config/              # Configuración de ambiente (Env)
+│   ├── di/                  # Inyección de Dependencias (GetIt)
+│   ├── network/             # Cliente Dio e Interceptors
+│   ├── router/              # Navegación (GoRouter)
+│   ├── services/            # Servicios de terceros (RemoteConfig, Theme)
+│   └── theme/               # Sistema de Diseño de la App
 │
 ├── features/
-│   ├── home/                # Movie Categories (Genres)
-│   │   ├── presentation/    # HomeBloc, Pages
+│   ├── home/                # Categorías de Películas (Géneros)
+│   │   ├── presentation/    # HomeBloc, Páginas
 │   │
-│   ├── movie/               # Core Movie Logic
-│   │   ├── data/            # DTOs, DataSources (Remote/Local), Repositories Impl
-│   │   ├── domain/          # Entities, Repositories Contracts, UseCases
+│   ├── movie/               # Lógica Principal de Películas
+│   │   ├── data/            # DTOs, DataSources (Remoto/Local), Impl de Repositorios
+│   │   ├── domain/          # Entidades, Contratos de Repositorios, Casos de Uso
 │   │   └── presentation/    # GenreMoviesBloc, MovieDetailsCubit, UI
 │   │
-│   └── splash/              # App Initialization & Data Pre-fetching
+│   └── splash/              # Inicialización de App y Precarga de Datos
 ```
 
-### Layer Responsibilities
+### Responsabilidades de las Capas
 
-1.  **Domain Layer (Inner Core)**: Contains pure Dart code. Entities, Repository Interfaces, and Use Cases. It has **zero dependencies** on Flutter or external libraries.
-2.  **Data Layer**: Implements Repository interfaces. Handles data retrieval from APIs (Dio) or Local Storage (Hive), and mapping to Domain Entities.
-3.  **Presentation Layer**: UI (Widgets) and State Management (BLoC/Cubit). It depends only on the Domain Layer.
-
----
-
-## ✨ Key Features & Implementation Details
-
-### 🔄 State Management (BLoC)
-We utilize the **BLoC pattern** for complex flows and **Cubit** for simpler states.
-- **Advanced Event Handling**: Usage of `bloc_concurrency`'s `droppable` transformer in `GenreMoviesBloc` to prevent duplicate API requests during pagination (throttling).
-- **Global Monitoring**: Implementation of `AppBlocObserver` to log all state changes and errors for debugging.
-
-### 🌍 Environments (Flavors)
-The app is configured with two distinct flavors, each with its own Firebase project, bundle ID, and environment variables:
-- **QA**: `com.example.imdumb.qa` (Orange Banner, Debug logging enabled)
-- **Production**: `com.example.imdumb` (Clean UI, Production analytics)
-
-This was achieved using `flutter_flavorizr` and custom entry points (`main_qa.dart`, `main_prod.dart`).
-
-### 🔥 Firebase Integration
-- **Remote Config**: Fetches dynamic theme colors (`primary_color`) at app startup.
-- **Analytics**: Tracks key events like `recommend_movie` and user segmentation by environment (`env` user property).
-- **Firestore**: Implements a full **CRUD** for User Recommendations (Create, Read, Delete) directly from the detailed view.
-
-### 💾 Local Persistence
-- **Hive**: Used to cache critical data like Movie Genres to ensure the app works offline or loads instantly on subsequent launches.
+1.  **Capa de Dominio (Núcleo Interno)**: Contiene código Dart puro. Entidades, Interfaces de Repositorios y Casos de Uso. Tiene **cero dependencias** de Flutter o librerías externas.
+2.  **Capa de Datos**: Implementa las interfaces de Repositorios. Maneja la obtención de datos desde APIs (Dio) o Almacenamiento Local (Hive), y el mapeo a Entidades de Dominio.
+3.  **Capa de Presentación**: UI (Widgets) y Manejo de Estado (BLoC/Cubit). Depende únicamente de la Capa de Dominio.
 
 ---
 
-## � Demo Preview
+## ✨ Funcionalidades Clave y Detalles de Implementación
+
+### 🔄 Manejo de Estado (BLoC)
+Utilizamos el **patrón BLoC** para flujos complejos y **Cubit** para estados más simples.
+- **Manejo Avanzado de Eventos**: Uso del transformador `droppable` de `bloc_concurrency` en `GenreMoviesBloc` para prevenir peticiones API duplicadas durante la paginación (throttling).
+- **Monitoreo Global**: Implementación de `AppBlocObserver` para registrar todos los cambios de estado y errores para depuración.
+
+### 🌍 Ambientes (Flavors)
+La app está configurada con dos sabores distintos, cada uno con su propio proyecto de Firebase, bundle ID y variables de ambiente:
+- **QA**: `com.example.imdumb.qa` (Banner Naranja, logs de debug habilitados)
+- **Producción**: `com.example.imdumb` (UI Limpia, analíticas de producción)
+
+Esto se logró usando `flutter_flavorizr` y puntos de entrada personalizados (`main_qa.dart`, `main_prod.dart`).
+
+### 🔥 Integración con Firebase
+- **Remote Config**: Obtiene colores de tema dinámicos (`primary_color`) al inicio de la app.
+- **Analytics**: Rastrea eventos clave como `recommend_movie` y segmentación de usuarios por ambiente (propiedad de usuario `env`).
+- **Firestore**: Implementa un **CRUD** completo para Recomendaciones de Usuario (Crear, Leer, Eliminar) directamente desde la vista detallada.
+
+### 💾 Persistencia Local
+- **Hive**: Usado para cachear datos críticos como Géneros de Películas para asegurar que la app funcione offline o cargue instantáneamente en lanzamientos subsiguientes.
+
+---
+
+## 🎥 Demo Preview
 
 ### 1. 🔄 Infinite Scroll & Concurrency
-*Implementing `droppable` transformer to prevent duplicate API calls.*
-<!-- Add your GIF/Video here showing the smooth scroll -->
-![Pagination Demo](placeholder_link)
+*Implementación del transformador `droppable` para prevenir llamadas duplicadas a la API.*
 
-### 2. 🎨 Dynamic Theming (Remote Config)
-*Fetching specific theme colors from Firebase.*
-<!-- Add your GIF/Video here showing the splash screen loading the theme -->
-![Theme Demo](placeholder_link)
+https://github.com/user-attachments/assets/ebdc4e79-2864-4c7a-9de2-4e136ba599aa
 
-### 3. 📝 User Recommendations (Firestore)
-*Real-time CRUD operations.*
-<!-- Add your GIF/Video here showing the create/delete flow -->
-![CRUD Demo](placeholder_link)
+### 2. 🏠 Categorías y Listado de Películas
+*Navegación fluida entre categorías y listados de películas.*
 
-### 4. 🌍 QA vs Prod Environments
-*Distinct features for each flavor.*
-<!-- Add your GIF/Video here showing the different apps -->
-![Environments Demo](placeholder_link)
+https://github.com/user-attachments/assets/a3640e38-d36a-425c-9165-8d157b03ed3f
+
+### 3. 🎬 Detalle de Película & Hero Animation
+*Experiencia inmersiva con Hero Animations, carrusel de imágenes y lista de actores.*
+
+https://github.com/user-attachments/assets/a4de5086-9e98-4307-af12-46ed05d94784
+
+### 4. 📝 Recomendaciones (Firebase CRUD)
+*Gestión completa de recomendaciones de usuario sincronizada en tiempo real con Firestore.*
+
+https://github.com/user-attachments/assets/c4c20c1f-fa30-4956-91cb-0834d464b47f
+
+<img width="1134" height="598" alt="Recommendation Detail" src="https://github.com/user-attachments/assets/1d978437-c38e-484a-8ea5-334c8213afd8" />
+
+https://github.com/user-attachments/assets/b21f8886-bb93-46ff-8542-50aa046537d6
+
+### 5. 🎨 Dynamic Theming
+*Personalización dinámica mediante Firebase Remote Config y soporte para Dark/Light mode.*
+
+https://github.com/user-attachments/assets/4c504aed-02fb-4e4e-b7dc-bc7c37f6f9df
+
+### 6. 🌍 QA vs Prod Environments
+*Separación total de ambientes. Cada entorno (QA/Prod) tiene su propio proyecto de Firebase, Bundle ID y configuración.*
+
+**iOS Configuration**
+<img width="799" height="284" alt="iOS Build Configuration" src="https://github.com/user-attachments/assets/ef634ab6-c074-417b-b963-0558dbe38543" />
+
+<img width="300" alt="iOS Simulator" src="https://github.com/user-attachments/assets/8e15852a-2b53-4b27-bc98-45c2228b7639" />
+
+**Android Configuration**
+<img width="608" height="557" alt="Android Application ID" src="https://github.com/user-attachments/assets/73546f70-9f84-4d3e-82bc-4e0f4049fa3f" />
 
 ---
 
-## �🏛️ SOLID Principles in Action
+## 🏛️ Principios SOLID en Acción
 
-Specific examples of SOLID principles documented in the code:
+Ejemplos específicos de principios SOLID documentados en el código:
 
-1.  **Single Responsibility Principle (SRP)**:
-    - *Example*: `MovieRemoteDataSource` handles **only** raw data fetching, while `MovieRepositoryImpl` maps those models to domain entities.
-2.  **Open/Closed Principle (OCP)**:
-    - *Example*: The `DioClient` is open for extension (adding new interceptors) but closed for modification. We add `LoggingInterceptor` and `ErrorInterceptor` without changing the client's core logic.
-3.  **Dependency Inversion Principle (DIP)**:
-    - *Example*: The Presentation layer depends on abstract `UseCases` and `Repository` interfaces (Domain), not concrete implementations (Data). All dependencies are injected via `GetIt` (`injection_container.dart`).
+1.  **Principio de Responsabilidad Única (SRP)**:
+    - *Ejemplo*: `MovieRemoteDataSource` maneja **solo** la obtención de datos crudos, mientras que `MovieRepositoryImpl` mapea esos modelos a entidades de dominio.
+2.  **Principio Abierto/Cerrado (OCP)**:
+    - *Ejemplo*: El `DioClient` está abierto para extensión (añadir nuevos interceptors) pero cerrado para modificación. Añadimos `LoggingInterceptor` y `ErrorInterceptor` sin cambiar la lógica central del cliente.
+3.  **Principio de Inversión de Dependencias (DIP)**:
+    - *Ejemplo*: La capa de Presentación depende de abstracciones (`UseCases` e interfaces de `Repository` del Dominio), no de implementaciones concretas (Datos). Todas las dependencias se inyectan vía `GetIt` (`injection_container.dart`).
 
 ---
 
-## 🚀 Setup & Execution
+## 🚀 Instalación y Ejecución
 
-### Prerequisites
+### Prerrequisitos
 - Flutter SDK: `>=3.10.8`
 - Dart SDK: `>=3.0.0`
-- Active Firebase Project (google-services.json required)
+- Proyecto de Firebase Activo (se requiere google-services.json)
 
-### Installation
+### Instalación
 ```bash
-# Clone the repository
+# Clonar el repositorio
 git clone <repo_url>
 cd imdumb
 
-# Install dependencies
+# Instalar dependencias
 flutter pub get
 ```
 
-### Running the App
-Since the project uses flavors, you **must** specify the flavor and entry point:
+### Ejecutar la App
+Dado que el proyecto usa sabores (flavors), **debes** especificar el sabor y el punto de entrada:
 
-**Run QA Environment:**
+**Ejecutar Ambiente QA:**
 ```bash
 flutter run --flavor qa -t lib/main_qa.dart
 ```
 
-**Run Production Environment:**
+**Ejecutar Ambiente Producción:**
 ```bash
 flutter run --flavor prod -t lib/main_prod.dart
 ```
 
-### Note on Secrets
-The project requires `.env.qa` and `.env.prod` files in the root directory.
+### Nota sobre Secretos
+El proyecto requiere archivos `.env.qa` y `.env.prod` en el directorio raíz.
 ```env
 # .env.qa / .env.prod
 TMDB_BASE_URL=https://api.themoviedb.org/3
-TMDB_ACCESS_TOKEN=your_api_token_here
+TMDB_ACCESS_TOKEN=tu_token_api_aqui
 ```
 
 ---
 
-## 📦 Tech Stack
+## 📦 Stack Tecnológico
 
 - **Core**: Flutter, Dart
-- **State**: `flutter_bloc`, `bloc_concurrency`, `equatable`
-- **Navigation**: `go_router`
+- **Estado**: `flutter_bloc`, `bloc_concurrency`, `equatable`
+- **Navegación**: `go_router`
 - **Networking**: `dio`
 - **DI**: `get_it`
-- **Storage**: `hive`, `hive_flutter`
+- **Almacenamiento**: `hive`, `hive_flutter`
 - **Firebase**: `firebase_core`, `cloud_firestore`, `firebase_remote_config`, `firebase_analytics`
 - **UI Tooling**: `cached_network_image`, `shimmer`, `carousel_slider_plus`
 
 ---
-*Developed by Josue Lemus - 2026*
+*Desarrollado por Josue Lemus - 2026*
