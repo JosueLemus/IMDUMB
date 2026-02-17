@@ -1,5 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdumb/core/di/injection_container.dart';
 import 'package:imdumb/features/splash/presentation/pages/splash_page.dart';
 
 import '../../features/home/presentation/pages/home_page.dart';
@@ -15,6 +17,7 @@ abstract class AppRouter {
   static final router = GoRouter(
     initialLocation: '/',
     navigatorKey: _rootNavigatorKey,
+    observers: [FirebaseAnalyticsObserver(analytics: sl<FirebaseAnalytics>())],
     routes: [
       GoRoute(
         path: '/',

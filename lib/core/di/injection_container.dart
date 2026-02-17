@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:imdumb/core/network/dio_client.dart';
@@ -33,6 +34,7 @@ Future<void> init() async {
   // External
   sl.registerLazySingleton(() => DioClient().dio);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
+  sl.registerLazySingleton(() => FirebaseAnalytics.instance);
   sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
   sl.registerLazySingleton(() => RemoteConfigService(sl()));
   sl.registerLazySingleton(() => ThemeService());
