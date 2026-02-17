@@ -24,6 +24,9 @@ class DioClient {
       ),
     );
 
+    // [SOLID] Open/Closed Principle (OCP):
+    // The client is open for extension (adding new interceptors like Alice or Logging)
+    // but closed for modification of its core request logic.
     _dio.interceptors.addAll([LoggingInterceptor(), ErrorInterceptor()]);
   }
 

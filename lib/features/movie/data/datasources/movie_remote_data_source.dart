@@ -14,6 +14,9 @@ abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getMoviesByGenre(int genreId, {int page = 1});
 }
 
+// [SOLID] Single Responsibility Principle (SRP):
+// This class is solely responsible for fetching raw data from the external API.
+// It does not handle data mapping or business logic.
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   final Dio dio;
 

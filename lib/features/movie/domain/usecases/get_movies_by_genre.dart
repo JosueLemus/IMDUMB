@@ -2,6 +2,9 @@ import '../entities/movie.dart';
 import '../repositories/movie_repository.dart';
 
 class GetMoviesByGenre {
+  // [SOLID] Dependency Inversion Principle (DIP):
+  // High-level modules (UseCases) depend on abstractions (Repository Interface),
+  // not on low-level modules (Repository Implementation).
   final MovieRepository repository;
 
   GetMoviesByGenre(this.repository);
