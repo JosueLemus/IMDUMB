@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:imdumb/core/di/injection_container.dart';
+import 'package:imdumb/core/services/remote_config_service.dart';
 import 'package:imdumb/features/splash/presentation/pages/splash_page.dart';
 
 import '../../features/home/presentation/pages/home_page.dart';
@@ -66,8 +68,17 @@ abstract class AppRouter {
             routes: [
               GoRoute(
                 path: '/saved',
-                builder: (context, state) =>
-                    const Scaffold(body: Center(child: Text('Saved Page'))),
+                builder: (context, state) => Scaffold(
+                  body: Center(
+                    child: Text(
+                      sl<RemoteConfigService>().getHelloText(),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

@@ -1,53 +1,153 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:imdumb/core/di/injection_container.dart';
+import 'package:imdumb/features/movie/domain/entities/movie.dart';
+import 'package:imdumb/features/movie/presentation/bloc/recommendation_cubit.dart';
+import 'package:imdumb/features/movie/presentation/bloc/recommendation_state.dart';
+import 'package:imdumb/features/movie/presentation/widgets/details/recommend_bottom_sheet.dart';
 
 class DetailsActions extends StatelessWidget {
-  const DetailsActions({super.key});
+  final Movie movie;
+
+  const DetailsActions({super.key, required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          sl<RecommendationCubit>()..fetchRecommendation(movie.id),
+      child: _DetailsActionsContent(movie: movie),
+    );
+  }
+}
+
+class _DetailsActionsContent extends StatelessWidget {
+  final Movie movie;
+
+  const _DetailsActionsContent({required this.movie});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.play_arrow_rounded, size: 24),
-            label: const Text(
-              'Watch',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              elevation: 8,
-              shadowColor: Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: 0.4),
-              minimumSize: const Size(double.infinity, 54),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+    return BlocBuilder<RecommendationCubit, RecommendationState>(
+      builder: (context, state) {
+        final isRecommended = state.recommendation != null;
+
+        return Row(
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () => _showRecommendSheet(context),
+                icon: Icon(
+                  isRecommended
+                      ? Icons.check_circle_rounded
+                      : Icons.thumb_up_rounded,
+                  size: 24,
+                ),
+                label: Text(
+                  isRecommended ? 'Recommended' : 'Recommend',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isRecommended
+                      ? colorScheme.primaryContainer
+                      : colorScheme.primary,
+                  foregroundColor: isRecommended
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onPrimary,
+                  elevation: isRecommended ? 0 : 8,
+                  shadowColor: colorScheme.primary.withValues(alpha: 0.4),
+                  minimumSize: const Size(double.infinity, 54),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainer,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: IconButton(
-            icon: Icon(
-              Icons.favorite_rounded,
+            if (isRecommended) ...[
+              const SizedBox(width: 12),
+              _actionButton(
+                context,
+                icon: Icons.delete_outline_rounded,
+                color: colorScheme.error,
+                onPressed: () => _showDeleteConfirmation(context),
+              ),
+            ],
+            const SizedBox(width: 12),
+            _actionButton(
+              context,
+              icon: Icons.favorite_rounded,
               color: colorScheme.onSurfaceVariant,
-              size: 24,
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _actionButton(
+    BuildContext context, {
+    required IconData icon,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      width: 54,
+      height: 54,
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: color, size: 24),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
+  void _showRecommendSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (bottomSheetContext) => BlocProvider.value(
+        value: context.read<RecommendationCubit>(),
+        child: RecommendBottomSheet(movie: movie),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    final cubit = context.read<RecommendationCubit>();
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Delete Recommendation'),
+        content: const Text(
+          'Are you sure you want to remove your recommendation for this movie?',
         ),
-      ],
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              cubit.removeRecommendation();
+              Navigator.pop(dialogContext);
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
     );
   }
 }

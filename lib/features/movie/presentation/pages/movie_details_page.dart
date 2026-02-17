@@ -115,7 +115,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
           Padding(
             padding: const EdgeInsets.all(20),
-            child: const DetailsActions(),
+            child: DetailsActions(movie: widget.movie),
           ),
 
           DetailsStats(movie: widget.movie, state: state),
