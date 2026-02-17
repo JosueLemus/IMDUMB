@@ -4,10 +4,11 @@ import 'app_colors.dart';
 import 'app_typography.dart';
 
 abstract class AppTheme {
-  static ThemeData get light {
+  static ThemeData light(Color primaryColor) {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
+      seedColor: primaryColor,
       brightness: Brightness.light,
+      primary: primaryColor,
       surface: AppColors.lightBackground,
       onSurface: AppColors.lightPrimaryText,
       surfaceContainerHighest: AppColors.lightAltBackground,
@@ -41,10 +42,11 @@ abstract class AppTheme {
     );
   }
 
-  static ThemeData get dark {
+  static ThemeData dark(Color primaryColor) {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
+      seedColor: primaryColor,
       brightness: Brightness.dark,
+      primary: primaryColor,
       surface: AppColors.darkBackground,
       onSurface: AppColors.darkPrimaryText,
       surfaceContainerHighest: AppColors.darkSurface,

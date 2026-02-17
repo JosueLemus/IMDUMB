@@ -3,6 +3,8 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:imdumb/core/network/dio_client.dart';
 import 'package:imdumb/core/services/remote_config_service.dart';
+import 'package:imdumb/core/services/theme_service.dart';
+import 'package:imdumb/core/theme/cubit/theme_cubit.dart';
 import 'package:imdumb/features/home/presentation/bloc/home_bloc.dart';
 import 'package:imdumb/features/movie/data/datasources/movie_local_data_source.dart';
 import 'package:imdumb/features/movie/data/datasources/movie_remote_data_source.dart';
@@ -33,8 +35,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
   sl.registerLazySingleton(() => RemoteConfigService(sl()));
+  sl.registerLazySingleton(() => ThemeService());
 
   // BLoC
+  sl.registerLazySingleton(() => ThemeCubit(sl()));
   sl.registerFactory(() => HomeBloc(getGenres: sl()));
   sl.registerFactory(
     () => MovieDetailsBloc(getMovieDetails: sl(), getMovieCredits: sl()),
