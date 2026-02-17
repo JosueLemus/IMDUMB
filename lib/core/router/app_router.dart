@@ -7,7 +7,7 @@ import '../../features/home/presentation/pages/nav_wrapper.dart';
 import '../../features/movie/domain/entities/movie.dart';
 import '../../features/movie/presentation/pages/genre_movies_page.dart';
 import '../../features/movie/presentation/pages/movie_details_page.dart';
-import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/pages/settings_page.dart';
 
 abstract class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -83,8 +83,8 @@ abstract class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/profile',
-                builder: (context, state) => const ProfilePage(),
+                path: '/settings',
+                builder: (context, state) => const SettingsPage(),
               ),
             ],
           ),

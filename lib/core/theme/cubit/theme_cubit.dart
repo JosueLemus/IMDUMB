@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../services/theme_service.dart';
 import 'theme_state.dart';
 
@@ -10,11 +11,19 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   void init() {
     final hexColor = _themeService.getPrimaryColor();
-    emit(state.copyWith(primaryColor: _parseHexColor(hexColor)));
+    final mode = _themeService.getThemeMode();
+    emit(
+      state.copyWith(primaryColor: _parseHexColor(hexColor), themeMode: mode),
+    );
   }
 
   void updatePrimaryColor(String hexColor) {
     emit(state.copyWith(primaryColor: _parseHexColor(hexColor)));
+  }
+
+  void updateThemeMode(ThemeMode mode) {
+    _themeService.saveThemeMode(mode);
+    emit(state.copyWith(themeMode: mode));
   }
 
   Color _parseHexColor(String hexColor) {

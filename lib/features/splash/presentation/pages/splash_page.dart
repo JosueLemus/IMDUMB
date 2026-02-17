@@ -38,13 +38,13 @@ class _SplashPageState extends State<SplashPage>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SplashCubit(
+      create: (_) => SplashCubit(
         remoteConfigService: sl(),
         themeService: sl(),
         themeCubit: sl(),
       )..init(),
       child: BlocListener<SplashCubit, SplashState>(
-        listener: (context, state) {
+        listener: (_, state) {
           if (state.status == SplashStatus.success) {
             context.go('/home');
           }
