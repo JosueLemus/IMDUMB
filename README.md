@@ -84,26 +84,54 @@ https://github.com/user-attachments/assets/ebdc4e79-2864-4c7a-9de2-4e136ba599aa
 ### 2. 🏠 Categorías y Listado de Películas
 *Navegación fluida entre categorías y listados de películas.*
 
-https://github.com/user-attachments/assets/a3640e38-d36a-425c-9165-8d157b03ed3f
+
+
+https://github.com/user-attachments/assets/36a3e12d-4525-4ec5-9659-13d7cf1b19ed
+
+
 
 ### 3. 🎬 Detalle de Película & Hero Animation
 *Experiencia inmersiva con Hero Animations, carrusel de imágenes y lista de actores.*
 
-https://github.com/user-attachments/assets/a4de5086-9e98-4307-af12-46ed05d94784
+
+
+
+https://github.com/user-attachments/assets/9db152f9-9b24-4a9b-80f5-b7737b022668
+
+
+
+
+https://github.com/user-attachments/assets/1a60abbe-66df-46b8-ae40-86c92311e7ea
+
+
+
+
+
+
 
 ### 4. 📝 Recomendaciones (Firebase CRUD)
 *Gestión completa de recomendaciones de usuario sincronizada en tiempo real con Firestore.*
 
-https://github.com/user-attachments/assets/c4c20c1f-fa30-4956-91cb-0834d464b47f
 
-<img width="1134" height="598" alt="Recommendation Detail" src="https://github.com/user-attachments/assets/1d978437-c38e-484a-8ea5-334c8213afd8" />
+https://github.com/user-attachments/assets/18ce6b46-cad9-466c-ab8e-c6bfd38b5922
 
-https://github.com/user-attachments/assets/b21f8886-bb93-46ff-8542-50aa046537d6
+<img width="2204" height="708" alt="Captura de pantalla 2026-02-17 a la(s) 3 24 52 p  m" src="https://github.com/user-attachments/assets/827738a1-2f8b-4966-ac87-e487dc18e9e0" />
+
+
+
+https://github.com/user-attachments/assets/2cb59a24-4ce4-435d-b62d-7008f9e89454
+
+
+
 
 ### 5. 🎨 Dynamic Theming
 *Personalización dinámica mediante Firebase Remote Config y soporte para Dark/Light mode.*
 
-https://github.com/user-attachments/assets/4c504aed-02fb-4e4e-b7dc-bc7c37f6f9df
+
+https://github.com/user-attachments/assets/01c3afc7-941b-46d8-8649-1a0feda5e3d0
+
+
+
 
 ### 6. 🌍 QA vs Prod Environments
 *Separación total de ambientes. Cada entorno (QA/Prod) tiene su propio proyecto de Firebase, Bundle ID y configuración.*
