@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
+
 import '../../domain/usecases/get_movies_by_genre.dart';
 import '../../domain/usecases/is_favorite.dart';
 import '../../domain/usecases/toggle_favorite.dart';
@@ -16,7 +18,7 @@ class GenreMoviesBloc extends Bloc<GenreMoviesEvent, GenreMoviesState> {
     required this.toggleFavorite,
     required this.isFavorite,
   }) : super(const GenreMoviesState()) {
-    on<FetchGenreMovies>(_onFetchGenreMovies);
+    on<FetchGenreMovies>(_onFetchGenreMovies, transformer: droppable());
     on<ToggleFavoriteMovie>(_onToggleFavoriteMovie);
   }
 

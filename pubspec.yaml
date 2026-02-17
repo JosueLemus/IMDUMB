@@ -25,6 +25,7 @@ dependencies:
   cloud_firestore: ^6.1.2
   firebase_remote_config: ^6.1.4
   firebase_analytics: ^12.1.2
+  bloc_concurrency: ^0.3.0
 
 dev_dependencies:
   flutter_test:
