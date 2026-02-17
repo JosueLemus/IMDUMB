@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 
 import '../config/env.dart';
+import 'interceptors/error_interceptor.dart';
+import 'interceptors/logging_interceptor.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();
@@ -21,6 +23,8 @@ class DioClient {
         },
       ),
     );
+
+    _dio.interceptors.addAll([LoggingInterceptor(), ErrorInterceptor()]);
   }
 
   Dio get dio => _dio;

@@ -1,53 +1,57 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:imdumb/core/bloc/app_bloc_observer.dart';
+import 'package:imdumb/core/di/injection_container.dart';
 import 'package:imdumb/core/services/remote_config_service.dart';
 import 'package:imdumb/core/services/theme_service.dart';
-import 'package:imdumb/core/theme/cubit/theme_cubit.dart';
-import 'package:imdumb/core/theme/cubit/theme_state.dart';
 import 'package:imdumb/features/movie/data/models/genre_model.dart';
-import 'package:imdumb/features/movie/presentation/bloc/user_recommendations_cubit.dart';
-import 'package:imdumb/firebase_options.dart';
+import 'package:imdumb/firebase_options_prod.dart';
 
-import 'core/di/injection_container.dart';
-import 'core/router/app_router.dart';
-import 'core/theme/app_theme.dart';
+import 'app.dart';
+import 'firebase_options_qa.dart' as qa;
+import 'flavors.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final flavorParam = const String.fromEnvironment('appFlavor');
+  F.appFlavor = Flavor.values.firstWhere(
+    (e) => e.name == flavorParam,
+    orElse: () => Flavor.prod,
+  );
+
+  final options = F.appFlavor == Flavor.qa
+      ? qa.DefaultFirebaseOptions.currentPlatform
+      : ProdFirebaseOptions.currentPlatform;
+
+  await Firebase.initializeApp(options: options);
+
+  await mainCommon();
+}
+
+Future<void> mainCommon() async {
+  Bloc.observer = AppBlocObserver();
+
+  await FirebaseAnalytics.instance.setUserProperty(
+    name: 'env',
+    value: F.appFlavor.name,
+  );
+
   await Hive.initFlutter();
   await init();
   await sl<ThemeService>().init();
   await sl<RemoteConfigService>().initialize();
-  Hive.registerAdapter(GenreModelAdapter());
-  await dotenv.load(fileName: ".env");
-  runApp(const MainApp());
-}
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => sl<ThemeCubit>()..init()),
-        BlocProvider(create: (context) => sl<UserRecommendationsCubit>()),
-      ],
-      child: BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, state) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.light(state.primaryColor),
-            darkTheme: AppTheme.dark(state.primaryColor),
-            themeMode: state.themeMode,
-            routerConfig: AppRouter.router,
-          );
-        },
-      ),
-    );
+  if (!Hive.isAdapterRegistered(0)) {
+    Hive.registerAdapter(GenreModelAdapter());
   }
+
+  final envFile = F.appFlavor == Flavor.qa ? ".env.qa" : ".env.prod";
+  await dotenv.load(fileName: envFile);
+
+  runApp(const App());
 }

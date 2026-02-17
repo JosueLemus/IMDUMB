@@ -32,8 +32,46 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   hive_generator: ^2.0.1
   build_runner: ^2.4.13
+  flutter_flavorizr: ^2.2.3
 
 flutter:
   uses-material-design: true
   assets:
-    - .env
+    - .env.qa
+    - .env.prod
+
+flavorizr:
+  flavors:
+    qa:
+      app:
+        name: "IMDUMB QA"
+      android:
+        applicationId: "com.example.imdumb.qa"
+      ios:
+        bundleId: "com.example.imdumb.qa"
+      
+    prod:
+      app:
+        name: "IMDUMB"
+      android:
+        applicationId: "com.example.imdumb"   
+      ios:
+        bundleId: "com.example.imdumb"
+
+  instructions:
+    - assets:download
+    - assets:extract
+    - android:androidManifest
+    - android:buildGradle
+    - android:dummyAssets
+    - flutter:flavors
+    - flutter:app
+    - flutter:pages
+    - flutter:main
+    - ios:podfile
+    - ios:xcconfig
+    - ios:buildTargets
+    - ios:schema
+    - ios:dummyAssets
+    - ios:plist
+    - assets:clean
