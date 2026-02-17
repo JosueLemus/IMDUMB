@@ -1,12 +1,12 @@
 import 'package:imdumb/features/movie/domain/entities/recommendation.dart';
 import 'package:imdumb/features/movie/domain/repositories/recommendation_repository.dart';
 
-class RecommendMovie {
+class GetUserRecommendations {
   final RecommendationRepository repository;
 
-  RecommendMovie(this.repository);
+  GetUserRecommendations(this.repository);
 
-  Future<String> call(Recommendation recommendation) {
-    return repository.recommendMovie(recommendation);
+  Future<List<Recommendation>> call(String userId) {
+    return repository.getUserRecommendations(userId);
   }
 }

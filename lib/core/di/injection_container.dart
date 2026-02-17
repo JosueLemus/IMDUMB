@@ -21,12 +21,14 @@ import 'package:imdumb/features/movie/domain/usecases/get_movie_details.dart';
 import 'package:imdumb/features/movie/domain/usecases/get_movies_by_genre.dart';
 import 'package:imdumb/features/movie/domain/usecases/get_now_playing_movies.dart';
 import 'package:imdumb/features/movie/domain/usecases/get_recommendation.dart';
+import 'package:imdumb/features/movie/domain/usecases/get_user_recommendations.dart';
 import 'package:imdumb/features/movie/domain/usecases/is_favorite.dart';
 import 'package:imdumb/features/movie/domain/usecases/recommend_movie.dart';
 import 'package:imdumb/features/movie/domain/usecases/toggle_favorite.dart';
 import 'package:imdumb/features/movie/presentation/bloc/genre_movies_bloc.dart';
 import 'package:imdumb/features/movie/presentation/bloc/movie_details_bloc.dart';
 import 'package:imdumb/features/movie/presentation/bloc/recommendation_cubit.dart';
+import 'package:imdumb/features/movie/presentation/bloc/user_recommendations_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -59,6 +61,14 @@ Future<void> init() async {
       deleteRecommendationUseCase: sl(),
     ),
   );
+  sl.registerFactory(
+    () => UserRecommendationsCubit(
+      getUserRecommendations: sl(),
+      recommendMovie: sl(),
+      deleteRecommendation: sl(),
+      analytics: sl(),
+    ),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => GetNowPlayingMovies(sl()));
@@ -71,6 +81,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RecommendMovie(sl()));
   sl.registerLazySingleton(() => GetRecommendation(sl()));
   sl.registerLazySingleton(() => DeleteRecommendation(sl()));
+  sl.registerLazySingleton(() => GetUserRecommendations(sl()));
 
   // Repository
   sl.registerLazySingleton<MovieRepository>(

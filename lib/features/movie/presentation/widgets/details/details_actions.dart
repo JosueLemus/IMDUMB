@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:imdumb/core/di/injection_container.dart';
 import 'package:imdumb/features/movie/domain/entities/movie.dart';
-import 'package:imdumb/features/movie/presentation/bloc/recommendation_cubit.dart';
-import 'package:imdumb/features/movie/presentation/bloc/recommendation_state.dart';
+import 'package:imdumb/features/movie/presentation/bloc/user_recommendations_cubit.dart';
 import 'package:imdumb/features/movie/presentation/widgets/details/recommend_bottom_sheet.dart';
 
 class DetailsActions extends StatelessWidget {
@@ -13,11 +11,7 @@ class DetailsActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          sl<RecommendationCubit>()..fetchRecommendation(movie.id),
-      child: _DetailsActionsContent(movie: movie),
-    );
+    return _DetailsActionsContent(movie: movie);
   }
 }
 
@@ -29,9 +23,10 @@ class _DetailsActionsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return BlocBuilder<RecommendationCubit, RecommendationState>(
+    return BlocBuilder<UserRecommendationsCubit, UserRecommendationsState>(
       builder: (context, state) {
-        final isRecommended = state.recommendation != null;
+        final recommendation = state.getRecommendationForMovie(movie.id);
+        final isRecommended = recommendation != null;
 
         return Row(
           children: [
@@ -116,14 +111,14 @@ class _DetailsActionsContent extends StatelessWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (bottomSheetContext) => BlocProvider.value(
-        value: context.read<RecommendationCubit>(),
+        value: context.read<UserRecommendationsCubit>(),
         child: RecommendBottomSheet(movie: movie),
       ),
     );
   }
 
   void _showDeleteConfirmation(BuildContext context) {
-    final cubit = context.read<RecommendationCubit>();
+    final cubit = context.read<UserRecommendationsCubit>();
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -138,7 +133,7 @@ class _DetailsActionsContent extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              cubit.removeRecommendation();
+              cubit.removeRecommendation(movie.id);
               Navigator.pop(dialogContext);
             },
             style: TextButton.styleFrom(

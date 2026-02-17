@@ -42,6 +42,7 @@ class _SplashPageState extends State<SplashPage>
         remoteConfigService: sl(),
         themeService: sl(),
         themeCubit: sl(),
+        userRecommendationsCubit: sl(),
       )..init(),
       child: BlocListener<SplashCubit, SplashState>(
         listener: (_, state) {

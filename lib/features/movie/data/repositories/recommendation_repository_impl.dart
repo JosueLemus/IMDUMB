@@ -9,7 +9,7 @@ class RecommendationRepositoryImpl implements RecommendationRepository {
   RecommendationRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<void> recommendMovie(Recommendation recommendation) {
+  Future<String> recommendMovie(Recommendation recommendation) {
     return remoteDataSource.recommendMovie(
       RecommendationModel.fromEntity(recommendation),
     );
@@ -26,5 +26,11 @@ class RecommendationRepositoryImpl implements RecommendationRepository {
     String userId,
   ) {
     return remoteDataSource.getRecommendationForMovie(movieId, userId);
+  }
+
+  @override
+  Future<List<Recommendation>> getUserRecommendations(String userId) async {
+    final models = await remoteDataSource.getUserRecommendations(userId);
+    return models;
   }
 }

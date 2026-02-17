@@ -8,6 +8,7 @@ import 'package:imdumb/core/services/theme_service.dart';
 import 'package:imdumb/core/theme/cubit/theme_cubit.dart';
 import 'package:imdumb/core/theme/cubit/theme_state.dart';
 import 'package:imdumb/features/movie/data/models/genre_model.dart';
+import 'package:imdumb/features/movie/presentation/bloc/user_recommendations_cubit.dart';
 import 'package:imdumb/firebase_options.dart';
 
 import 'core/di/injection_container.dart';
@@ -31,8 +32,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<ThemeCubit>()..init(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<ThemeCubit>()..init()),
+        BlocProvider(create: (context) => sl<UserRecommendationsCubit>()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
           return MaterialApp.router(
