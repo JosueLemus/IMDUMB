@@ -169,7 +169,7 @@ Ejemplos específicos de principios SOLID documentados en el código:
 ### Instalación
 ```bash
 # Clonar el repositorio
-git clone <repo_url>
+git clone https://github.com/JosueLemus/IMDUMB.git
 cd imdumb
 
 # Instalar dependencias
@@ -181,12 +181,12 @@ Dado que el proyecto usa sabores (flavors), **debes** especificar el sabor y el 
 
 **Ejecutar Ambiente QA:**
 ```bash
-flutter run --flavor qa -t lib/main_qa.dart
+flutter run --flavor qa --dart-define=appFlavor=qa  
 ```
 
 **Ejecutar Ambiente Producción:**
 ```bash
-flutter run --flavor prod -t lib/main_prod.dart
+flutter run --flavor prod --dart-define=appFlavor=prod
 ```
 
 ### Nota sobre Secretos
